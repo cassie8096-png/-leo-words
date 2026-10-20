@@ -1,86 +1,91 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>Leo Words</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><title>Leo's Word Game</title>
 <style>
-*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#fff8e9;color:#253238}
-.wrap{max-width:760px;margin:auto;padding:28px 18px 50px;text-align:center} h1{font-size:38px;margin:10px 0 4px}.sub{color:#657278;margin-bottom:25px}
-.card{background:white;border-radius:24px;padding:22px;box-shadow:0 6px 22px #00000012;margin:14px 0}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.mode{border:0;border-radius:20px;padding:24px 10px;font-size:20px;font-weight:700;background:#eef5ff;color:#253238;min-height:105px}
-.mode.spell{background:#fff0b8}.mode.tricky{background:#f4eaff}.mode:active,.answer:active,.action:active{transform:scale(.98)}
-.hidden{display:none}.top{display:flex;justify-content:space-between;align-items:center;font-weight:700}.back{border:0;background:#eee;border-radius:14px;padding:10px 14px;font-size:16px}
-.prompt{font-size:30px;font-weight:800;margin:28px 0 18px}.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}.answer{border:2px solid #dbe4e8;background:white;border-radius:18px;padding:22px 8px;font-size:25px;font-weight:700}
-.action{border:0;border-radius:16px;background:#3569d4;color:white;padding:15px 20px;font-size:19px;font-weight:700;margin:8px}
-input{width:min(430px,95%);font-size:30px;padding:15px;text-align:center;border:3px solid #ccd7dc;border-radius:18px;outline:none}
-.feedback{min-height:48px;font-size:21px;font-weight:700;margin:15px}.good{color:#16843a}.bad{color:#c43d34}
-.small{font-size:15px;color:#6c777b}.stars{font-size:22px}.wordchips{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}.chip{background:#f4eaff;border-radius:14px;padding:10px 13px;font-weight:700}
-@media(max-width:520px){h1{font-size:32px}.mode{font-size:18px}.prompt{font-size:26px}}
-</style></head>
-<body><main class="wrap">
-<section id="home">
-<h1>🌟 Leo Words 🌟</h1><div class="sub">Year 1 reading & spelling practice</div>
+*{box-sizing:border-box}body{margin:0;background:#fff8e8;color:#25343b;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{max-width:760px;margin:auto;padding:22px 16px 55px;text-align:center}h1{font-size:38px;margin:8px}.hello{font-size:20px;color:#68777d;margin-bottom:18px}
+.panel{background:#fff;border-radius:24px;padding:20px;margin:14px 0;box-shadow:0 5px 20px #0001}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{font:inherit;cursor:pointer}.mode,.big{border:0;border-radius:20px;padding:20px 10px;min-height:100px;font-size:19px;font-weight:800;color:#24343a}
+.learn{background:#dff7e8}.read{background:#e8f1ff}.spell{background:#fff0b9}.review{background:#f2e7ff}.wide{grid-column:1/-1;background:#eef0f1;min-height:70px}
+.top{display:flex;justify-content:space-between;align-items:center;font-weight:800;gap:8px}.pill{background:#fff;border:0;border-radius:14px;padding:10px 13px;box-shadow:0 2px 8px #0001}
+.hidden{display:none!important}.prompt{font-size:30px;font-weight:900;margin:23px 0 12px}.word{font-size:46px;font-weight:900;margin:10px}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:11px}.answer{background:#fff;border:2px solid #dce4e7;border-radius:17px;padding:19px 6px;font-size:24px;font-weight:800}
+.action{border:0;border-radius:16px;padding:14px 18px;margin:6px;font-size:18px;font-weight:800;background:#356bd7;color:#fff}.soft{background:#edf0f1;color:#35444a}
+input{width:min(440px,96%);font-size:31px;text-align:center;padding:14px;border:3px solid #ccd8dd;border-radius:18px;outline:none}
+.feedback{font-size:22px;font-weight:900;min-height:55px;margin:13px}.good{color:#13863a}.try{color:#b46b00}.stars{font-size:23px}.celebrate{animation:pop .55s ease}@keyframes pop{50%{transform:scale(1.16)}}
+.confetti{position:fixed;pointer-events:none;font-size:28px;animation:fall 1.2s ease-out forwards}@keyframes fall{to{transform:translateY(180px) rotate(260deg);opacity:0}}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}.chip{padding:9px 12px;border-radius:13px;background:#eef2f3;font-weight:750}.small{color:#6c797e;font-size:14px}
+.bar{height:12px;background:#e7ecee;border-radius:9px;overflow:hidden}.fill{height:100%;background:#7aaf62;width:0}.badge{font-size:34px;margin:7px}
+@media(max-width:520px){h1{font-size:32px}.mode{font-size:17px}.prompt{font-size:26px}.word{font-size:40px}}
+</style></head><body><main>
+<section id="home"><h1>🌟 Leo's Word Game 🌟</h1><div class="hello" id="welcome"></div>
+<div class="panel"><div class="top"><span>🌟 Leo's Stars</span><span class="stars" id="totalStars"></span></div><div class="bar"><div class="fill" id="starFill"></div></div><div class="small" id="milestone"></div></div>
 <div class="grid">
-<button class="mode" data-mode="listen">🔊<br>Listen & Find</button>
-<button class="mode" data-mode="read">👀<br>Read & Find</button>
-<button class="mode spell" data-mode="spell">✏️<br>Spell the Word</button>
-<button class="mode tricky" data-mode="tricky">⭐<br>My Tricky Words</button>
-</div>
-<div class="card small">10 words each round • British English voice • tricky words come back more often</div>
-</section>
+<button class="mode learn" data-mode="learn">🌱<br>Learn Words</button><button class="mode read" data-mode="read">👀<br>Read & Find</button>
+<button class="mode spell" data-mode="spell">✏️<br>Listen & Spell</button><button class="mode review" data-mode="review">⭐<br>Review Words</button>
+<button class="mode wide" data-mode="words">📚 Leo's Words & Progress</button></div></section>
 
-<section id="game" class="hidden">
-<div class="top"><button class="back" id="back">← Home</button><span id="progress">1 / 10</span><span class="stars" id="score">⭐ 0</span></div>
-<div class="card">
-<div id="prompt" class="prompt"></div>
-<button id="hear" class="action hidden">🔊 Hear the word</button>
-<div id="answers" class="answers"></div>
-<div id="spellBox" class="hidden"><input id="spellInput" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Type the word"><br><button id="check" class="action">Check ✓</button></div>
-<div id="feedback" class="feedback"></div>
-<button id="next" class="action hidden">Next →</button>
-</div>
-</section>
+<section id="game" class="hidden"><div class="top"><button class="pill" id="homeBtn">← Home</button><span id="progress"></span><span class="stars" id="roundStars"></span></div>
+<div class="panel"><div id="prompt" class="prompt"></div><div id="displayWord" class="word"></div>
+<button id="hear" class="action hidden">🔊 Hear it again</button><div id="answers" class="answers"></div>
+<div id="spellArea" class="hidden"><input id="spellInput" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Type the word"><br>
+<button id="check" class="action">Check ✓</button><button id="cantHear" class="action soft">👂 I couldn't hear it</button><button id="showWord" class="action soft">👀 Show word</button></div>
+<div id="feedback" class="feedback"></div><button id="next" class="action hidden">Next →</button></div></section>
 
-<section id="trickyPage" class="hidden">
-<div class="top"><button class="back" id="back2">← Home</button><span>⭐ My Tricky Words</span><span></span></div>
-<div class="card"><p>Words Leo has found difficult will appear here and return more often in practice.</p><div id="chips" class="wordchips"></div><p id="none" class="small">No tricky words yet — great start!</p></div>
-<button id="practiceTricky" class="action">Practise these words</button>
-</section>
-</main>
-<script>
-const levels = {
- easy:["the","a","I","no","go","so","he","me","she","we","be","my","by","to","do","of","is","his","has","you"],
- core:["your","they","are","was","were","said","says","here","there","where","come","some","one","once","ask","friend","school","put","push","pull","full","house","our"],
- more:["what","want","all","her","call","old","who","any","brother","could","would","people","other","two","water","should","through","many","mother","father","buy","bought","great","walk"]
-};
-const all=[...levels.easy,...levels.core,...levels.more];
-let mode="", round=[], q=0, points=0, target="", locked=false;
-const $=id=>document.getElementById(id);
-function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
-function tricky(){try{return JSON.parse(localStorage.getItem("leoTricky")||"{}")}catch(e){return {}}}
-function saveTricky(w,delta){let t=tricky();t[w]=Math.max(0,(t[w]||0)+delta);if(!t[w])delete t[w];localStorage.setItem("leoTricky",JSON.stringify(t))}
-function speak(w){if(!("speechSynthesis" in window))return; speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(w);u.lang="en-GB";u.rate=.76;speechSynthesis.speak(u)}
-function pool(){let t=tricky(), weighted=[...all];Object.keys(t).forEach(w=>{for(let i=0;i<Math.min(t[w],3);i++)weighted.push(w)});return weighted}
-function start(m, custom=null){mode=m; q=0;points=0; round=custom||shuffle(pool()).slice(0,10); $("home").classList.add("hidden");$("trickyPage").classList.add("hidden");$("game").classList.remove("hidden");show()}
-function show(){
- locked=false;$("feedback").textContent="";$("feedback").className="feedback";$("next").classList.add("hidden");$("answers").innerHTML="";$("spellInput").value="";
- target=round[q];$("progress").textContent=`${q+1} / ${round.length}`;$("score").textContent=`⭐ ${points}`;
- $("hear").classList.toggle("hidden",!(mode==="listen"||mode==="spell"));$("spellBox").classList.toggle("hidden",mode!=="spell");
- if(mode==="read"){$("prompt").textContent=target; makeChoices()}
- if(mode==="listen"){$("prompt").textContent="Which word did you hear?";makeChoices();setTimeout(()=>speak(target),250)}
- if(mode==="spell"){$("prompt").textContent="Listen and spell the word";setTimeout(()=>speak(target),250);setTimeout(()=>$("spellInput").focus(),350)}
-}
-function makeChoices(){let opts=shuffle([target,...shuffle(all.filter(x=>x!==target)).slice(0,3)]);opts.forEach(w=>{let b=document.createElement("button");b.className="answer";b.textContent=w;b.onclick=()=>answer(w);$("answers").appendChild(b)})}
-function answer(w){if(locked)return;locked=true;if(w===target){points++;saveTricky(target,-1);feedback(true,"Great job! ⭐")}else{saveTricky(target,1);feedback(false,`Good try. The word is “${target}”.`)}}
-function checkSpell(){if(locked)return;let v=$("spellInput").value.trim().toLowerCase();if(!v)return;
- if(v===target.toLowerCase()){locked=true;points++;saveTricky(target,-1);feedback(true,"Brilliant spelling! ⭐")}
- else{saveTricky(target,1);$("feedback").textContent=`Almost! Look: ${target} — now type it again.`;$("feedback").className="feedback bad";$("spellInput").value="";$("spellInput").focus();speak(target)}
-}
-function feedback(ok,msg){$("feedback").textContent=msg;$("feedback").className="feedback "+(ok?"good":"bad");$("next").classList.remove("hidden")}
-function next(){q++;if(q>=round.length){$("prompt").textContent=`You got ${points} / ${round.length}! 🎉`;$("answers").innerHTML="";$("spellBox").classList.add("hidden");$("hear").classList.add("hidden");$("feedback").textContent=points>=8?"Fantastic work! ⭐⭐⭐":"Nice practice — keep going!";$("next").textContent="Play again";$("next").classList.remove("hidden");$("next").onclick=()=>start(mode);return}$("next").textContent="Next →";$("next").onclick=next;show()}
-function home(){$("game").classList.add("hidden");$("trickyPage").classList.add("hidden");$("home").classList.remove("hidden")}
-function showTricky(){let t=tricky(), ws=Object.keys(t).sort((a,b)=>t[b]-t[a]);$("home").classList.add("hidden");$("trickyPage").classList.remove("hidden");$("chips").innerHTML="";$("none").classList.toggle("hidden",ws.length>0);ws.forEach(w=>{let s=document.createElement("span");s.className="chip";s.textContent=w;$("chips").appendChild(s)});$("practiceTricky").disabled=!ws.length;$("practiceTricky").onclick=()=>start("spell",shuffle(ws).slice(0,10))}
-document.querySelectorAll(".mode").forEach(b=>b.onclick=()=>b.dataset.mode==="tricky"?showTricky():start(b.dataset.mode));
-$("hear").onclick=()=>speak(target);$("check").onclick=checkSpell;$("spellInput").addEventListener("keydown",e=>{if(e.key==="Enter")checkSpell()});$("next").onclick=next;$("back").onclick=home;$("back2").onclick=home;
+<section id="wordsPage" class="hidden"><div class="top"><button class="pill" id="homeBtn2">← Home</button><b>📚 Leo's Words</b><span></span></div>
+<div class="panel"><div class="badge">🏆</div><div id="progressSummary"></div></div>
+<div class="panel"><h3>Learning</h3><div id="learningChips" class="chips"></div></div>
+<div class="panel"><h3>⭐ Needs more practice</h3><div id="trickyChips" class="chips"></div></div>
+<div class="panel"><h3>💪 Strong words</h3><div id="strongChips" class="chips"></div></div></section>
+</main><script>
+const DATA=[
+["the","The cat is on the bed."],["a","I have a red hat."],["do","Do you like it?"],["to","We go to school."],["today","We can play today."],
+["of","I have a cup of milk."],["said","Mum said hello."],["says","Leo says hello."],["are","We are happy."],["were","We were at school."],
+["was","It was a sunny day."],["is","The dog is big."],["his","That is his bag."],["has","Leo has a book."],["I","I can run."],
+["you","You can do it."],["your","This is your book."],["they","They can play."],["be","Be kind."],["he","He can jump."],
+["me","Come with me."],["she","She can sing."],["we","We like books."],["no","No, thank you."],["go","Go to the park."],
+["so","It is so big."],["by","Sit by me."],["my","This is my hat."],["here","Come over here."],["there","Put it there."],
+["where","Where is my book?"],["love","I love my family."],["come","Come and play."],["some","I have some water."],["one","I have one dog."],
+["once","Once upon a time."],["ask","Ask for help."],["friend","Leo has a friend."],["school","Leo goes to school."],["put","Put it here."],
+["push","Push the door."],["pull","Pull the box."],["full","The cup is full."],["house","This is our house."],["our","This is our game."],
+["Monday","Today is Monday."],["Tuesday","Today is Tuesday."],["Wednesday","Today is Wednesday."],["Thursday","Today is Thursday."],["Friday","Today is Friday."],["Saturday","Today is Saturday."],["Sunday","Today is Sunday."]
+].map(([w,s])=>({w,s}));
+const key="leoWordGameV4";
+function state(){try{return JSON.parse(localStorage.getItem(key))||{stars:0,words:{},sessions:0}}catch(e){return{stars:0,words:{},sessions:0}}}
+let S=state();function save(){localStorage.setItem(key,JSON.stringify(S))}
+function rec(w){return S.words[w]||(S.words[w]={seen:0,readOK:0,spellIndependent:0,hint:0,retry:0,hear:0,last:0})}
+function shuffled(a){return [...a].sort(()=>Math.random()-.5)}const $=x=>document.getElementById(x);
+let mode="",round=[],i=0,roundStars=0,target=null,locked=false,assisted=false,hadWrong=false;
+const praise=["Brilliant, Leo! 🌟","Amazing work, Leo! ⭐","You got it, Leo! 🎉","Super spelling, Leo! ⭐","Yes, Leo! That's right! 🌟","Fantastic, Leo! 🙌"];
+const effort=["You did it, Leo! You kept trying! ⭐","Great trying, Leo! 🌟","Nice work, Leo — you got there! ⭐"];
+function praiseText(){return praise[Math.floor(Math.random()*praise.length)]}
+function speakText(text){if(!speechSynthesis)return;speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(text);u.lang="en-GB";u.rate=.72;let vs=speechSynthesis.getVoices(),v=vs.find(x=>x.lang==="en-GB"&&/Daniel|Serena|Kate|Martha|Arthur|Oliver/i.test(x.name))||vs.find(x=>x.lang==="en-GB");if(v)u.voice=v;speechSynthesis.speak(u)}
+function speakQuestion(){speakText(`${target.w}. ${target.s} ${target.w}.`)}
+function addStars(n){S.stars+=n;roundStars+=n;save();$("roundStars").textContent=`⭐ ${roundStars}`;$("roundStars").classList.remove("celebrate");void $("roundStars").offsetWidth;$("roundStars").classList.add("celebrate")}
+function confetti(){for(let j=0;j<9;j++){let e=document.createElement("div");e.className="confetti";e.textContent=["⭐","✨","🎉"][j%3];e.style.left=(15+Math.random()*70)+"vw";e.style.top=(15+Math.random()*25)+"vh";e.style.animationDelay=(Math.random()*.25)+"s";document.body.appendChild(e);setTimeout(()=>e.remove(),1500)}}
+function pool(review=false){let arr=DATA;if(review){let r=DATA.filter(x=>{let z=rec(x.w);return z.retry>0||z.hint>0||(z.seen>1&&z.spellIndependent<2)});if(r.length)arr=r}return shuffled(arr).slice(0,10)}
+function start(m){mode=m;i=0;roundStars=0;round=pool(m==="review");$("home").classList.add("hidden");$("wordsPage").classList.add("hidden");$("game").classList.remove("hidden");show()}
+function show(){locked=false;assisted=false;hadWrong=false;target=round[i];rec(target.w).seen++;rec(target.w).last=Date.now();save();
+$("progress").textContent=`${i+1} / ${round.length}`;$("roundStars").textContent=`⭐ ${roundStars}`;$("feedback").textContent="";$("feedback").className="feedback";$("next").classList.add("hidden");$("answers").innerHTML="";$("displayWord").textContent="";
+$("spellArea").classList.add("hidden");$("hear").classList.add("hidden");
+if(mode==="learn"){$("prompt").textContent="Look, listen and say it";$("displayWord").textContent=target.w;$("hear").classList.remove("hidden");setTimeout(speakQuestion,250);$("next").classList.remove("hidden")}
+else if(mode==="read"){$("prompt").textContent="Find this word";$("displayWord").textContent=target.w;choices()}
+else{$("prompt").textContent=mode==="review"?"Let's practise this one":"Listen and spell the word";$("spellArea").classList.remove("hidden");$("hear").classList.remove("hidden");setTimeout(speakQuestion,250);setTimeout(()=>$("spellInput").focus(),300)}}
+function choices(){let opts=shuffled([target,...shuffled(DATA.filter(x=>x.w!==target.w)).slice(0,3)]);opts.forEach(o=>{let b=document.createElement("button");b.className="answer";b.textContent=o.w;b.onclick=()=>readAnswer(o.w);$("answers").appendChild(b)})}
+function readAnswer(w){if(locked)return;locked=true;if(w===target.w){rec(target.w).readOK++;addStars(1);good(praiseText())}else{rec(target.w).retry++;save();$("feedback").textContent=`Good try, Leo. This one is “${target.w}”.`;$("feedback").className="feedback try";$("next").classList.remove("hidden")}}
+function check(){if(locked)return;let v=$("spellInput").value.trim().toLowerCase(),correct=target.w.toLowerCase();if(!v)return;
+if(v===correct){locked=true;if(!assisted&&!hadWrong)rec(target.w).spellIndependent++;else if(hadWrong)rec(target.w).retry++;save();addStars(1);good(hadWrong?effort[Math.floor(Math.random()*effort.length)]:praiseText())}
+else{hadWrong=true;rec(target.w).retry++;save();$("feedback").textContent="Nearly, Leo. Have another go! 💪";$("feedback").className="feedback try";$("spellInput").value="";$("spellInput").focus();speakQuestion()}}
+function cantHear(){assisted=true;rec(target.w).hear++;save();$("feedback").textContent="No problem, Leo — listen again. 👂";$("feedback").className="feedback";speakQuestion()}
+function showWord(){assisted=true;rec(target.w).hint++;save();$("displayWord").textContent=target.w;$("feedback").textContent="Look carefully, Leo. Now try it yourself. 👀";$("feedback").className="feedback";setTimeout(()=>{$("displayWord").textContent="";$("spellInput").focus()},2200)}
+function good(t){$("feedback").textContent=t;$("feedback").className="feedback good";$("next").classList.remove("hidden");if(Math.random()<.55)confetti()}
+function next(){i++;if(i>=round.length){finish();return}$("spellInput").value="";show()}
+function finish(){S.sessions++;save();$("prompt").textContent=roundStars===10?"🏆 PERFECT ROUND, LEO! 🏆":"🌟 Great work, Leo! 🌟";$("displayWord").textContent=`You earned ${roundStars} stars!`;$("answers").innerHTML="";$("spellArea").classList.add("hidden");$("hear").classList.add("hidden");$("feedback").textContent=`Leo's total: ⭐ ${S.stars}`;$("next").textContent="Play again";$("next").classList.remove("hidden");$("next").onclick=()=>start(mode);confetti()}
+function home(){$("game").classList.add("hidden");$("wordsPage").classList.add("hidden");$("home").classList.remove("hidden");$("next").textContent="Next →";$("next").onclick=next;homeStats()}
+function homeStats(){let n=S.stars;$("totalStars").textContent=`⭐ ${n}`;let goals=[25,50,100,200,500],next=goals.find(x=>x>n)||500;$("starFill").style.width=Math.min(100,n/next*100)+"%";$("milestone").textContent=n<25?`${25-n} stars to Leo's first badge!`:n<50?`${50-n} stars to Super Speller!`:n<100?`${100-n} stars to Word Wizard!`:n<200?`${200-n} stars to Word Champion!`:"Leo is a Word Champion! 🏆";$("welcome").textContent=S.sessions?`Welcome back, Leo! Ready for some words?`:`Hi Leo! This word game is made just for you. 😊`}
+function wordPage(){home();$("home").classList.add("hidden");$("wordsPage").classList.remove("hidden");let strong=[],tricky=[],learning=[];DATA.forEach(x=>{let r=rec(x.w);if(r.spellIndependent>=2)strong.push(x.w);else if(r.retry||r.hint)tricky.push(x.w);else learning.push(x.w)});chips("strongChips",strong);chips("trickyChips",tricky);chips("learningChips",learning);$("progressSummary").innerHTML=`<b>${strong.length}</b> strong words &nbsp; • &nbsp; <b>${S.stars}</b> stars<br><span class="small">Strong means Leo has spelt the word independently more than once.</span>`}
+function chips(id,a){$(id).innerHTML=a.length?a.map(w=>`<span class="chip">${w}</span>`).join(""):`<span class="small">None yet</span>`}
+document.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>b.dataset.mode==="words"?wordPage():start(b.dataset.mode));
+$("homeBtn").onclick=home;$("homeBtn2").onclick=home;$("hear").onclick=speakQuestion;$("check").onclick=check;$("cantHear").onclick=cantHear;$("showWord").onclick=showWord;$("next").onclick=next;
+$("spellInput").addEventListener("keydown",e=>{if(e.key==="Enter")check()});speechSynthesis.onvoiceschanged=()=>{};homeStats();
 </script></body></html>
