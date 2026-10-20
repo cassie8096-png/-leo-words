@@ -1,22 +1,86 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Leo Year 1 Words</title><style>
-body{font-family:Arial,sans-serif;background:#eef8ff;color:#26324a;margin:0}main{max-width:650px;margin:auto;padding:20px}.card{background:#fff;border-radius:24px;padding:24px;margin-top:18px;box-shadow:0 8px 25px #0002}h1,h2{text-align:center}button{width:100%;border:0;border-radius:17px;padding:17px;margin:7px 0;font-size:21px;font-weight:bold;background:#6558d9;color:#fff}.alt{background:#eeeaff;color:#4338a3}.choice{background:#f5f7fa;color:#26324a;border:2px solid #dde3ea}.correct{background:#dff7e5!important}.wrong{background:#ffe1e1!important}#word{text-align:center;font-size:46px;font-weight:bold;margin:24px}.top{display:flex;justify-content:space-between;font-weight:bold;font-size:18px}#instruction,#feedback{text-align:center;font-size:21px}.hidden{display:none}</style></head><body><main>
-<h1>🌟 Leo's Year 1 Word Game 🌟</h1>
-<section id="home" class="card"><h2>Choose a game</h2><button id="listen">🔊 Listen and Find</button><button id="read" class="alt">👀 Read and Find</button></section>
-<section id="game" class="card hidden"><div class="top"><span id="num"></span><span id="score"></span></div><p id="instruction"></p><div id="word"></div><button id="hear" class="alt">🔊 Hear the word</button><div id="choices"></div><p id="feedback"></p><button id="next" class="hidden">Next ➜</button></section>
-<section id="finish" class="card hidden"><div style="font-size:70px;text-align:center">🏆</div><h2 id="result"></h2><button id="again">Play again 🎮</button></section>
-</main><script>
-(function(){
-var W=["the","do","to","today","of","said","says","are","were","was","is","his","has","you","your","they","be","he","me","she","we","no","go","so","by","my","here","there","where","love","come","some","one","once","ask","friend","school","put","push","pull","full","house","our","cat","dog","fish","shop","chip","thin","this","that","then","rain","play","day","see","green","feet","book","look","good","moon","car","star","park","farm","tree","boat","coat","food","room","night","light","right","jump","run","stop","help","hand"];
-function E(x){return document.getElementById(x)} function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
-var q=[],i=0,s=0,c="",mode="",done=false;
-function start(m){mode=m;q=shuffle(W).slice(0,10);i=0;s=0;E("home").className="card hidden";E("finish").className="card hidden";E("game").className="card";show()}
-function show(){done=false;c=q[i];E("num").textContent=(i+1)+" / 10";E("score").textContent="⭐ "+s;E("feedback").textContent="";E("next").className="hidden";E("choices").innerHTML="";
-if(mode==="listen"){E("instruction").textContent="Listen. Which word did you hear?";E("word").textContent="👂";E("hear").className="alt";setTimeout(speak,300)}else{E("instruction").textContent="Find the same word.";E("word").textContent=c;E("hear").className="alt hidden"}
-var opts=shuffle([c].concat(shuffle(W.filter(function(x){return x!==c})).slice(0,3)));
-opts.forEach(function(x){var b=document.createElement("button");b.className="choice";b.textContent=x;b.addEventListener("click",function(){pick(b,x)});E("choices").appendChild(b)})}
-function pick(b,x){if(done)return;done=true;var bs=E("choices").getElementsByTagName("button");for(var k=0;k<bs.length;k++)if(bs[k].textContent===c)bs[k].className+=" correct";if(x===c){s++;E("feedback").textContent="🌟 Brilliant!"}else{b.className+=" wrong";E("feedback").textContent="Good try! The word is “"+c+"”."}E("score").textContent="⭐ "+s;E("next").className=""}
-function next(){if(!done)return;i++;if(i===q.length){E("game").className="card hidden";E("finish").className="card";E("result").textContent="You got "+s+" out of 10!"}else show()}
-function speak(){if(window.speechSynthesis){speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(c);u.lang="en-GB";u.rate=.78;speechSynthesis.speak(u)}}
-E("listen").addEventListener("click",function(){start("listen")});E("read").addEventListener("click",function(){start("read")});E("hear").addEventListener("click",speak);E("next").addEventListener("click",next);E("again").addEventListener("click",function(){E("finish").className="card hidden";E("home").className="card"})
-})();
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Leo Words</title>
+<style>
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#fff8e9;color:#253238}
+.wrap{max-width:760px;margin:auto;padding:28px 18px 50px;text-align:center} h1{font-size:38px;margin:10px 0 4px}.sub{color:#657278;margin-bottom:25px}
+.card{background:white;border-radius:24px;padding:22px;box-shadow:0 6px 22px #00000012;margin:14px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.mode{border:0;border-radius:20px;padding:24px 10px;font-size:20px;font-weight:700;background:#eef5ff;color:#253238;min-height:105px}
+.mode.spell{background:#fff0b8}.mode.tricky{background:#f4eaff}.mode:active,.answer:active,.action:active{transform:scale(.98)}
+.hidden{display:none}.top{display:flex;justify-content:space-between;align-items:center;font-weight:700}.back{border:0;background:#eee;border-radius:14px;padding:10px 14px;font-size:16px}
+.prompt{font-size:30px;font-weight:800;margin:28px 0 18px}.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}.answer{border:2px solid #dbe4e8;background:white;border-radius:18px;padding:22px 8px;font-size:25px;font-weight:700}
+.action{border:0;border-radius:16px;background:#3569d4;color:white;padding:15px 20px;font-size:19px;font-weight:700;margin:8px}
+input{width:min(430px,95%);font-size:30px;padding:15px;text-align:center;border:3px solid #ccd7dc;border-radius:18px;outline:none}
+.feedback{min-height:48px;font-size:21px;font-weight:700;margin:15px}.good{color:#16843a}.bad{color:#c43d34}
+.small{font-size:15px;color:#6c777b}.stars{font-size:22px}.wordchips{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}.chip{background:#f4eaff;border-radius:14px;padding:10px 13px;font-weight:700}
+@media(max-width:520px){h1{font-size:32px}.mode{font-size:18px}.prompt{font-size:26px}}
+</style></head>
+<body><main class="wrap">
+<section id="home">
+<h1>🌟 Leo Words 🌟</h1><div class="sub">Year 1 reading & spelling practice</div>
+<div class="grid">
+<button class="mode" data-mode="listen">🔊<br>Listen & Find</button>
+<button class="mode" data-mode="read">👀<br>Read & Find</button>
+<button class="mode spell" data-mode="spell">✏️<br>Spell the Word</button>
+<button class="mode tricky" data-mode="tricky">⭐<br>My Tricky Words</button>
+</div>
+<div class="card small">10 words each round • British English voice • tricky words come back more often</div>
+</section>
+
+<section id="game" class="hidden">
+<div class="top"><button class="back" id="back">← Home</button><span id="progress">1 / 10</span><span class="stars" id="score">⭐ 0</span></div>
+<div class="card">
+<div id="prompt" class="prompt"></div>
+<button id="hear" class="action hidden">🔊 Hear the word</button>
+<div id="answers" class="answers"></div>
+<div id="spellBox" class="hidden"><input id="spellInput" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Type the word"><br><button id="check" class="action">Check ✓</button></div>
+<div id="feedback" class="feedback"></div>
+<button id="next" class="action hidden">Next →</button>
+</div>
+</section>
+
+<section id="trickyPage" class="hidden">
+<div class="top"><button class="back" id="back2">← Home</button><span>⭐ My Tricky Words</span><span></span></div>
+<div class="card"><p>Words Leo has found difficult will appear here and return more often in practice.</p><div id="chips" class="wordchips"></div><p id="none" class="small">No tricky words yet — great start!</p></div>
+<button id="practiceTricky" class="action">Practise these words</button>
+</section>
+</main>
+<script>
+const levels = {
+ easy:["the","a","I","no","go","so","he","me","she","we","be","my","by","to","do","of","is","his","has","you"],
+ core:["your","they","are","was","were","said","says","here","there","where","come","some","one","once","ask","friend","school","put","push","pull","full","house","our"],
+ more:["what","want","all","her","call","old","who","any","brother","could","would","people","other","two","water","should","through","many","mother","father","buy","bought","great","walk"]
+};
+const all=[...levels.easy,...levels.core,...levels.more];
+let mode="", round=[], q=0, points=0, target="", locked=false;
+const $=id=>document.getElementById(id);
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function tricky(){try{return JSON.parse(localStorage.getItem("leoTricky")||"{}")}catch(e){return {}}}
+function saveTricky(w,delta){let t=tricky();t[w]=Math.max(0,(t[w]||0)+delta);if(!t[w])delete t[w];localStorage.setItem("leoTricky",JSON.stringify(t))}
+function speak(w){if(!("speechSynthesis" in window))return; speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(w);u.lang="en-GB";u.rate=.76;speechSynthesis.speak(u)}
+function pool(){let t=tricky(), weighted=[...all];Object.keys(t).forEach(w=>{for(let i=0;i<Math.min(t[w],3);i++)weighted.push(w)});return weighted}
+function start(m, custom=null){mode=m; q=0;points=0; round=custom||shuffle(pool()).slice(0,10); $("home").classList.add("hidden");$("trickyPage").classList.add("hidden");$("game").classList.remove("hidden");show()}
+function show(){
+ locked=false;$("feedback").textContent="";$("feedback").className="feedback";$("next").classList.add("hidden");$("answers").innerHTML="";$("spellInput").value="";
+ target=round[q];$("progress").textContent=`${q+1} / ${round.length}`;$("score").textContent=`⭐ ${points}`;
+ $("hear").classList.toggle("hidden",!(mode==="listen"||mode==="spell"));$("spellBox").classList.toggle("hidden",mode!=="spell");
+ if(mode==="read"){$("prompt").textContent=target; makeChoices()}
+ if(mode==="listen"){$("prompt").textContent="Which word did you hear?";makeChoices();setTimeout(()=>speak(target),250)}
+ if(mode==="spell"){$("prompt").textContent="Listen and spell the word";setTimeout(()=>speak(target),250);setTimeout(()=>$("spellInput").focus(),350)}
+}
+function makeChoices(){let opts=shuffle([target,...shuffle(all.filter(x=>x!==target)).slice(0,3)]);opts.forEach(w=>{let b=document.createElement("button");b.className="answer";b.textContent=w;b.onclick=()=>answer(w);$("answers").appendChild(b)})}
+function answer(w){if(locked)return;locked=true;if(w===target){points++;saveTricky(target,-1);feedback(true,"Great job! ⭐")}else{saveTricky(target,1);feedback(false,`Good try. The word is “${target}”.`)}}
+function checkSpell(){if(locked)return;let v=$("spellInput").value.trim().toLowerCase();if(!v)return;
+ if(v===target.toLowerCase()){locked=true;points++;saveTricky(target,-1);feedback(true,"Brilliant spelling! ⭐")}
+ else{saveTricky(target,1);$("feedback").textContent=`Almost! Look: ${target} — now type it again.`;$("feedback").className="feedback bad";$("spellInput").value="";$("spellInput").focus();speak(target)}
+}
+function feedback(ok,msg){$("feedback").textContent=msg;$("feedback").className="feedback "+(ok?"good":"bad");$("next").classList.remove("hidden")}
+function next(){q++;if(q>=round.length){$("prompt").textContent=`You got ${points} / ${round.length}! 🎉`;$("answers").innerHTML="";$("spellBox").classList.add("hidden");$("hear").classList.add("hidden");$("feedback").textContent=points>=8?"Fantastic work! ⭐⭐⭐":"Nice practice — keep going!";$("next").textContent="Play again";$("next").classList.remove("hidden");$("next").onclick=()=>start(mode);return}$("next").textContent="Next →";$("next").onclick=next;show()}
+function home(){$("game").classList.add("hidden");$("trickyPage").classList.add("hidden");$("home").classList.remove("hidden")}
+function showTricky(){let t=tricky(), ws=Object.keys(t).sort((a,b)=>t[b]-t[a]);$("home").classList.add("hidden");$("trickyPage").classList.remove("hidden");$("chips").innerHTML="";$("none").classList.toggle("hidden",ws.length>0);ws.forEach(w=>{let s=document.createElement("span");s.className="chip";s.textContent=w;$("chips").appendChild(s)});$("practiceTricky").disabled=!ws.length;$("practiceTricky").onclick=()=>start("spell",shuffle(ws).slice(0,10))}
+document.querySelectorAll(".mode").forEach(b=>b.onclick=()=>b.dataset.mode==="tricky"?showTricky():start(b.dataset.mode));
+$("hear").onclick=()=>speak(target);$("check").onclick=checkSpell;$("spellInput").addEventListener("keydown",e=>{if(e.key==="Enter")checkSpell()});$("next").onclick=next;$("back").onclick=home;$("back2").onclick=home;
 </script></body></html>
