@@ -1,0 +1,8 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {freshState,progress,complete,chooseWord} from '../engine.js';
+import {words} from '../words.js';
+test('growth crosses leaf, flower, tree and year boundaries exactly',()=>{for(const [n,l,f] of [[0,0,0],[1,1,0],[49,49,0],[50,50,0],[51,50,1],[74,50,24]]){assert.equal(progress(n).leaves,l);assert.equal(progress(n).flowers,f);}assert.equal(progress(75).tree,1);assert.deepEqual(progress(299).unlocked,[6]);assert.deepEqual(progress(300).unlocked,[6,7]);assert.deepEqual(progress(599).unlocked,[6,7]);assert.deepEqual(progress(600).unlocked,[6,7,8]);});
+test('300 challenges grow exactly four trees and leave maths independent',()=>{const s=freshState();for(let i=0;i<300;i++)complete(s,'curiosity',false);assert.equal(progress(s.vocabulary.completed).year,7);assert.equal(s.maths.completed,0);});
+test('a difficult word reappears after two intervening completed challenges',()=>{const s=freshState();const w=words[0];complete(s,w.word,true);assert.notEqual(chooseWord(s,words).word,w.word);complete(s,words[1].word,false);assert.notEqual(chooseWord(s,words).word,w.word);complete(s,words[2].word,false);assert.equal(chooseWord(s,words).word,w.word);complete(s,w.word,false);assert.equal(s.vocabulary.reviews[w.word],undefined);});
+test('all words have meaning checks, valid choices and non-leaking recall clues',()=>{assert.equal(words.length,30);for(const w of words){assert.equal(w.choices.length,3);assert.ok(w.choices[w.answer]);assert.ok(!w.clue.toLowerCase().includes(w.word));assert.ok(!w.meaning.toLowerCase().includes(w.word));}});

@@ -1,0 +1,9 @@
+# Ava’s Magical Kingdom — Vocabulary MVP
+
+Run `npm start` (Node 18+) and open http://127.0.0.1:4173. Run `npm test` for progression and review checks. No build or dependencies required.
+
+This prototype follows Leo’s Word Garden’s responsive three-card home, large friendly controls, calm cream/green palette, short activities and browser-local progress. Ava has her own forest, content, reward rules and storage key. No characters or houses. Leo’s original game remains unchanged.
+
+Home: My Forest / Start an Adventure / Stamp Book. Year 6 is the only initially visible year. Each completed challenge requires learning a meaning, passing a contextual meaning check, studying the spelling and recalling it with the word hidden. A game-owned A–Z keyboard writes to a read-only display, avoiding native predictive text. A physical keyboard also works while the spelling display is focused. No visible spelling answer or sentence containing the answer is rendered during recall. A miss offers study-and-hide retry and schedules the word after two intervening completions. One completed challenge grows one leaf for the first 50, then one flower for the next 25. Four trees (Cherry Blossom, Golden Wishing, Crystal, Rainbow) unlock Year 7; four more unlock Year 8. Later-year word adventures are outside this Year 6 MVP and honestly marked as forthcoming. Maths progress is stored separately and never changed.
+
+Each new tree automatically grows from a buried seed into a bare winter tree once, with reduced-motion support. Progress persists in localStorage on this browser/device only. Completing trees earns corresponding stamps. The bank contains 30 original Year 6-oriented words with meaning/context activities, recycled for practice; it is a prototype bank, not a full curriculum. No accounts, analytics or cloud sync.
