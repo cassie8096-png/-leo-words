@@ -1,0 +1,22 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Leo Year 1 Words</title><style>
+body{font-family:Arial,sans-serif;background:#eef8ff;color:#26324a;margin:0}main{max-width:650px;margin:auto;padding:20px}.card{background:#fff;border-radius:24px;padding:24px;margin-top:18px;box-shadow:0 8px 25px #0002}h1,h2{text-align:center}button{width:100%;border:0;border-radius:17px;padding:17px;margin:7px 0;font-size:21px;font-weight:bold;background:#6558d9;color:#fff}.alt{background:#eeeaff;color:#4338a3}.choice{background:#f5f7fa;color:#26324a;border:2px solid #dde3ea}.correct{background:#dff7e5!important}.wrong{background:#ffe1e1!important}#word{text-align:center;font-size:46px;font-weight:bold;margin:24px}.top{display:flex;justify-content:space-between;font-weight:bold;font-size:18px}#instruction,#feedback{text-align:center;font-size:21px}.hidden{display:none}</style></head><body><main>
+<h1>🌟 Leo's Year 1 Word Game 🌟</h1>
+<section id="home" class="card"><h2>Choose a game</h2><button id="listen">🔊 Listen and Find</button><button id="read" class="alt">👀 Read and Find</button></section>
+<section id="game" class="card hidden"><div class="top"><span id="num"></span><span id="score"></span></div><p id="instruction"></p><div id="word"></div><button id="hear" class="alt">🔊 Hear the word</button><div id="choices"></div><p id="feedback"></p><button id="next" class="hidden">Next ➜</button></section>
+<section id="finish" class="card hidden"><div style="font-size:70px;text-align:center">🏆</div><h2 id="result"></h2><button id="again">Play again 🎮</button></section>
+</main><script>
+(function(){
+var W=["the","do","to","today","of","said","says","are","were","was","is","his","has","you","your","they","be","he","me","she","we","no","go","so","by","my","here","there","where","love","come","some","one","once","ask","friend","school","put","push","pull","full","house","our","cat","dog","fish","shop","chip","thin","this","that","then","rain","play","day","see","green","feet","book","look","good","moon","car","star","park","farm","tree","boat","coat","food","room","night","light","right","jump","run","stop","help","hand"];
+function E(x){return document.getElementById(x)} function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+var q=[],i=0,s=0,c="",mode="",done=false;
+function start(m){mode=m;q=shuffle(W).slice(0,10);i=0;s=0;E("home").className="card hidden";E("finish").className="card hidden";E("game").className="card";show()}
+function show(){done=false;c=q[i];E("num").textContent=(i+1)+" / 10";E("score").textContent="⭐ "+s;E("feedback").textContent="";E("next").className="hidden";E("choices").innerHTML="";
+if(mode==="listen"){E("instruction").textContent="Listen. Which word did you hear?";E("word").textContent="👂";E("hear").className="alt";setTimeout(speak,300)}else{E("instruction").textContent="Find the same word.";E("word").textContent=c;E("hear").className="alt hidden"}
+var opts=shuffle([c].concat(shuffle(W.filter(function(x){return x!==c})).slice(0,3)));
+opts.forEach(function(x){var b=document.createElement("button");b.className="choice";b.textContent=x;b.addEventListener("click",function(){pick(b,x)});E("choices").appendChild(b)})}
+function pick(b,x){if(done)return;done=true;var bs=E("choices").getElementsByTagName("button");for(var k=0;k<bs.length;k++)if(bs[k].textContent===c)bs[k].className+=" correct";if(x===c){s++;E("feedback").textContent="🌟 Brilliant!"}else{b.className+=" wrong";E("feedback").textContent="Good try! The word is “"+c+"”."}E("score").textContent="⭐ "+s;E("next").className=""}
+function next(){if(!done)return;i++;if(i===q.length){E("game").className="card hidden";E("finish").className="card";E("result").textContent="You got "+s+" out of 10!"}else show()}
+function speak(){if(window.speechSynthesis){speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(c);u.lang="en-GB";u.rate=.78;speechSynthesis.speak(u)}}
+E("listen").addEventListener("click",function(){start("listen")});E("read").addEventListener("click",function(){start("read")});E("hear").addEventListener("click",speak);E("next").addEventListener("click",next);E("again").addEventListener("click",function(){E("finish").className="card hidden";E("home").className="card"})
+})();
+</script></body></html>
